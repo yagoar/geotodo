@@ -1,3 +1,4 @@
 .tmp/*
 www/*
 .vscode/*
+node_modules/*
