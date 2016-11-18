@@ -2,3 +2,4 @@
 www/*
 .vscode/*
 node_modules/*
+platforms/*

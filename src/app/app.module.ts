@@ -6,7 +6,7 @@ import { TodosPage } from '../pages/todos/todos';
 import { LocationsPage } from '../pages/locations/locations';
 import { MapPage } from '../pages/map/map';
 import { SettingsPage } from '../pages/settings/settings';
-
+import {AddPage} from "../pages/add/add";
 
 @NgModule({
   declarations: [
@@ -15,8 +15,8 @@ import { SettingsPage } from '../pages/settings/settings';
     TodosPage,
     MapPage,
     SettingsPage,
-    TabsPage
-    
+    TabsPage,
+    AddPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -28,7 +28,8 @@ import { SettingsPage } from '../pages/settings/settings';
     TodosPage,
     MapPage,
     SettingsPage,
-    TabsPage
+    TabsPage,
+    AddPage
   ],
   providers: []
 })
