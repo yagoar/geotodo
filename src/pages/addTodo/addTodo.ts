@@ -9,9 +9,9 @@ import { NavController } from 'ionic-angular';
 */
 @Component({
   selector: 'page-add',
-  templateUrl: 'add.html'
+  templateUrl: 'addTodo.html'
 })
-export class AddPage {
+export class AddTodoPage {
 
     public todoList: Array<Object>;
     public todoItem: {title:string, description:string};

@@ -17,12 +17,12 @@
                 <h3>{{ todo.description }}</h3>
             </ion-item>
             <ion-item-options side="left" >
-              <button ion-button expandable color="secondary">
+              <button ion-button icon-only expandable color="secondary">
                 <ion-icon name="checkmark"></ion-icon>
               </button>
              </ion-item-options>
             <ion-item-options side="right" (ionSwipe)="delete(i)">
-              <button ion-button expandable color="danger" (click)="delete(i)">
+              <button ion-button icon-only expandable color="danger" (click)="delete(i)">
                 <ion-icon name="trash"></ion-icon>
               </button>
              </ion-item-options>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import {AddPage} from "../add/add";
+import {AddTodoPage} from "../addTodo/addTodo";
 
 @Component({
   selector: 'page-todos',
@@ -27,7 +27,7 @@ export class TodosPage {
     }
  
     add() {
-        this.nav.push(AddPage);
+        this.nav.push(AddTodoPage);
     }
 
 }
