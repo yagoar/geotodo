@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import {AddTodoPage} from "../addTodo/addTodo";
+import {AddTodoPage} from "../add-todo/add-todo";
 
 @Component({
   selector: 'page-todos',
@@ -15,7 +15,6 @@ export class TodosPage {
  
     ionViewDidEnter() {
         this.todoList = JSON.parse(localStorage.getItem("todos"));
-        console.log("todos: " + localStorage.getItem("todos"));
         if(!this.todoList) {
             this.todoList = [];
         }

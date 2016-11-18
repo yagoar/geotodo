@@ -6,7 +6,8 @@ import { TodosPage } from '../pages/todos/todos';
 import { LocationsPage } from '../pages/locations/locations';
 import { MapPage } from '../pages/map/map';
 import { SettingsPage } from '../pages/settings/settings';
-import {AddTodoPage} from "../pages/addTodo/addTodo";
+import {AddTodoPage} from "../pages/add-todo/add-todo";
+import {AddLocationPage} from "../pages/add-location/add-location"
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import {AddTodoPage} from "../pages/addTodo/addTodo";
     MapPage,
     SettingsPage,
     TabsPage,
-    AddTodoPage
+    AddTodoPage,
+    AddLocationPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -29,7 +31,8 @@ import {AddTodoPage} from "../pages/addTodo/addTodo";
     MapPage,
     SettingsPage,
     TabsPage,
-    AddTodoPage
+    AddTodoPage,
+    AddLocationPage
   ],
   providers: []
 })

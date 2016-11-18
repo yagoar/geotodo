@@ -1,27 +1,26 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { AddLocationPage } from '../add-location/add-location'
 
 /*
-  Generated class for the Locations page.
+  Generated class for the AddLocation page.
 
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
 @Component({
-  selector: 'page-locations',
-  templateUrl: 'locations.html'
+  selector: 'page-add-location',
+  templateUrl: 'add-location.html'
 })
-export class LocationsPage {
+export class AddLocationPage {
 
   constructor(public navCtrl: NavController) {}
 
   ionViewDidLoad() {
-    console.log('Hello Locations Page');
+    console.log('Hello AddLocation Page');
   }
 
-  add() {
-    this.navCtrl.push(AddLocationPage);
-  }
+  save() {
+        this.navCtrl.pop();
+    }
 
 }

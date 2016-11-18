@@ -9,14 +9,14 @@ import { NavController } from 'ionic-angular';
 */
 @Component({
   selector: 'page-add',
-  templateUrl: 'addTodo.html'
+  templateUrl: 'add-todo.html'
 })
 export class AddTodoPage {
 
     public todoList: Array<Object>;
     public todoItem: {title:string, description:string};
  
-    constructor(private nav: NavController) {
+    constructor(private navCtrl: NavController) {
         this.todoList = JSON.parse(localStorage.getItem("todos"));
         if(!this.todoList) {
             this.todoList = [];
@@ -27,9 +27,8 @@ export class AddTodoPage {
     save() {
         if(this.todoItem.title != "") {
             this.todoList.push(this.todoItem);
-            console.log(this.todoItem);
             localStorage.setItem("todos", JSON.stringify(this.todoList));
-            this.nav.pop();
+            this.navCtrl.pop();
         }
     }
 
