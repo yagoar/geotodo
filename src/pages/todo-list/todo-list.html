@@ -1,0 +1,34 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Todos</ion-title>
+        <ion-buttons end>
+           <button ion-button icon-only (click)="add()">
+               <ion-icon name="add"></ion-icon>
+           </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+ 
+<ion-content class="todos">
+    <ion-list>
+        <ion-item-sliding *ngFor="let todo of todoList; let i = index">
+            <ion-item>
+                <h2>{{ todo.title }}</h2>
+                <h3>{{ todo.description }}</h3>
+            </ion-item>
+            <ion-item-options side="left" (ionSwipe)="complete(i)">
+              <button ion-button icon-only expandable color="secondary" (click)="complete(i)">
+                <ion-icon name="checkmark"></ion-icon>
+              </button>
+             </ion-item-options>
+            <ion-item-options side="right">
+              <button ion-button icon-only  color="primary" (click)="edit(i)">
+                <ion-icon name="brush"></ion-icon>
+              </button>
+              <button ion-button icon-only  color="danger" (click)="delete(i)">
+                <ion-icon name="trash"></ion-icon>
+              </button>
+             </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
+</ion-content>

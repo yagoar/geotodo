@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Todo hinzufügen</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="save()">
+               <ion-icon name="checkmark"></ion-icon>
+           </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="add">
+    <ion-list>
+        <ion-item>
+            <ion-label floating>Titel</ion-label>
+            <ion-input type="text" [(ngModel)]="todoItem.title"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Beschreibung</ion-label>
+            <ion-textarea rows="5" [(ngModel)]="todoItem.description"></ion-textarea>
+        </ion-item>
+        <ion-item>
+            <ion-label>Locations</ion-label>
+            <ion-select [(ngModel)]="todoItem.location" (ionChange)="updateLocation()">
+                <ion-option *ngFor="let location of locationsList">{{location.name}}</ion-option>
+            </ion-select>
+  </ion-item>
+    </ion-list>
+</ion-content>
