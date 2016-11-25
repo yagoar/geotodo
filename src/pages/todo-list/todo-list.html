@@ -2,7 +2,7 @@
     <ion-navbar>
         <ion-title>Todos</ion-title>
         <ion-buttons end>
-           <button ion-button icon-only (click)="add()">
+           <button ion-button icon-only (click)="addTodo()">
                <ion-icon name="add"></ion-icon>
            </button>
         </ion-buttons>
@@ -16,16 +16,16 @@
                 <h2>{{ todo.title }}</h2>
                 <h3>{{ todo.description }}</h3>
             </ion-item>
-            <ion-item-options side="left" (ionSwipe)="complete(i)">
-              <button ion-button icon-only expandable color="secondary" (click)="complete(i)">
+            <ion-item-options side="left" (ionSwipe)="completeTodo(i)">
+              <button ion-button icon-only expandable color="secondary" (click)="completeTodo(i)">
                 <ion-icon name="checkmark"></ion-icon>
               </button>
              </ion-item-options>
             <ion-item-options side="right">
-              <button ion-button text-only  color="primary" (click)="edit(i)">
+              <button ion-button text-only  color="primary" (click)="editTodo(i)">
                 Editieren
               </button>
-              <button ion-button text-only  color="danger" (click)="delete(i)">
+              <button ion-button text-only expandable color="danger" (click)="deleteTodo(i)">
                 Löschen
               </button>
              </ion-item-options>

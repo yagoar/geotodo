@@ -15,23 +15,19 @@ export class GeofenceObject {
 
     constructor(todo:Todo, location:Location) {
        this.id = UUID.UUID();
+       this.todoId = todo.id;
        this.latitude = location.latitude;
        this.longitude = location.longitude;
        this.transitionType = location.transitionType;
        this.radius = location.radius;
-       this.notification = this.createNotification(todo.title, todo.description, location.name);
-    }
-
-    createNotification(title:string, description:string, location:string) {
-        var title = `${title} in ${location}`;
-        return new Notification( title, description );
+       this.notification = new Notification( `${todo.title} in ${location.name}`, todo.description );
     }
 
     updateGeofenceValues(todo:Todo, location:Location) {
         this.latitude = location.latitude;
         this.longitude = location.longitude;
         this.radius = location.radius;
-        this.notification = this.createNotification(todo.title, todo.description, location.name);
+        this.notification = new Notification( `${todo.title} in ${location.name}`, todo.description );
         return this;
     }
 }
