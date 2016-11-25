@@ -1,6 +1,7 @@
+import { document } from '@angular/platform-browser/src/facade/browser';
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController } from 'ionic-angular';
-import { Geolocation } from 'ionic-native';
+import { NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
+import { Geolocation, GoogleMap, GoogleMapsLatLng, GoogleMapsEvent } from 'ionic-native';
 import { Location } from '../../models/location';
 
 @Component({
@@ -9,12 +10,15 @@ import { Location } from '../../models/location';
 })
 export class LocationDetailsPage {
 
+    map: GoogleMap;
+
   locationList: Array<Location>;
   location:Location;
 
   constructor(public navCtrl: NavController, 
     public navParams : NavParams,
-    public loadingController: LoadingController) {
+    public loadingController: LoadingController,
+    public platform:Platform) {
 
       this.locationList = JSON.parse(localStorage.getItem("locations"));
         if(!this.locationList) {
@@ -45,8 +49,40 @@ export class LocationDetailsPage {
 
           });
       }
-    
+    platform.ready().then(() => {
+            this.loadMap();
+        });
   }
+
+  loadMap(){
+          let location = new GoogleMapsLatLng(-34.9290,138.6010);
+ 
+        this.map = new GoogleMap('map', {
+          'backgroundColor': 'white',
+          'controls': {
+            'compass': true,
+            'myLocationButton': true,
+            'indoorPicker': true,
+            'zoom': true
+          },
+          'gestures': {
+            'scroll': true,
+            'tilt': true,
+            'rotate': true,
+            'zoom': true
+          },
+          'camera': {
+            'latLng': location,
+            'tilt': 30,
+            'zoom': 15,
+            'bearing': 50
+          }
+        });
+ 
+        this.map.on(GoogleMapsEvent.MAP_READY).subscribe(() => {
+            console.log('Map is ready!');
+        });
+    }
 
   save() {
 
