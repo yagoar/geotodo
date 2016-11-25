@@ -21,7 +21,7 @@
         </ion-item>
         <ion-item>
             <ion-label>Locations</ion-label>
-            <ion-select [(ngModel)]="todoItem.location" (ionChange)="updateLocation()">
+            <ion-select [(ngModel)]="todoItem.location">
                 <ion-option *ngFor="let location of locationsList">{{location.name}}</ion-option>
             </ion-select>
   </ion-item>

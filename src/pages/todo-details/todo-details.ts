@@ -3,7 +3,6 @@ import { NavController, NavParams, Platform } from 'ionic-angular';
 import { Location } from '../../models/location';
 import { Todo } from '../../models/todo';
 import { Geofence } from 'ionic-native';
-import { GeofenceObject } from '../../models/geofence-obj';
 
 @Component({
   selector: 'page-todo-details',
@@ -33,20 +32,29 @@ export class TodoDetailsPage {
         }
     }
 
-    updateLocation() {
-        console.log(this.todoItem.location.name);
-        
-        //   this.todoItem.getWatchedGeofence();
-        // this.todoItem.updateGeofence();
+    updateGeofence() {
+        if(this.todoItem.location != null) {
+
+            Geofence.addOrUpdate(this.todoItem.location.id).then((resp) => {
+                console.log('Successfully added/updated geofence');
+            }).catch((error) => {
+                console.log('Error adding geofence', error);
+            });
+        }
     }
- 
+
     save() {
         if(this.todoItem.title != "") {
+
+            this.updateGeofence();
+
+            //Update todoItem in todoList or push into todoList
             if(this.navParams.get('todo') != null) {
                 this.todoList[this.navParams.get('index')] = this.todoItem;
             } else {
                 this.todoList.push(this.todoItem);
             }
+
             localStorage.setItem("todos", JSON.stringify(this.todoList));
             this.navCtrl.pop();
         }

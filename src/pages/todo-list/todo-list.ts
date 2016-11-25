@@ -37,8 +37,7 @@ export class TodoListPage {
     }
 
     delete(index: number) {
-        var todo:Todo = this.todoList[index];
-        //todo.removeGeofence();
+
         this.todoList.splice(index, 1);
         localStorage.setItem("todos", JSON.stringify(this.todoList));
     }
