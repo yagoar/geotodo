@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { Location } from '../../models/location';
 import { Todo } from '../../models/todo';
+import { Geofence } from 'ionic-native';
+import { GeofenceObject } from '../../models/geofence-obj';
 
 @Component({
   selector: 'page-todo-details',
@@ -13,8 +15,8 @@ export class TodoDetailsPage {
     todoItem: Todo;
     locationsList: Array<Location>;
  
-    constructor(private navCtrl: NavController, private navParams: NavParams) {
-        this.todoList = JSON.parse(localStorage.getItem("todos"));
+    constructor(private navCtrl: NavController, private navParams: NavParams, private platform: Platform) {
+         this.todoList = JSON.parse(localStorage.getItem("todos"));
         if(!this.todoList) {
             this.todoList = [];
         }
@@ -23,23 +25,29 @@ export class TodoDetailsPage {
             this.locationsList = [];
         }
 
-        var passedTodo = navParams.get('todo');
+        var passedTodo = this.navParams.get('todo');
         if(passedTodo != null) {
             this.todoItem = passedTodo;
         } else {
             this.todoItem = new Todo("","",null);
         }
-        
     }
 
     updateLocation() {
         console.log(this.todoItem.location.name);
-        this.todoItem.updateGeofence();
+        
+        
+     //   this.todoItem.getWatchedGeofence();
+       // this.todoItem.updateGeofence();
     }
  
     save() {
         if(this.todoItem.title != "") {
-            this.todoList.push(this.todoItem);
+            if(this.navParams.get('todo') != null) {
+                this.todoList[this.navParams.get('index')] = this.todoItem;
+            } else {
+                this.todoList.push(this.todoItem);
+            }
             localStorage.setItem("todos", JSON.stringify(this.todoList));
             this.navCtrl.pop();
         }

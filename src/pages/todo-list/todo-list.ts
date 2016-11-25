@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 import { TodoDetailsPage } from "../todo-details/todo-details";
 import { Todo } from '../../models/todo';
+import { Geofence } from 'ionic-native';
 
 @Component({
   selector: 'page-todo-list',
@@ -12,8 +13,8 @@ export class TodoListPage {
 
     todoList: Array<Todo>;
  
-    constructor(private navCtrl: NavController) { 
-
+    constructor(private navCtrl: NavController, platform: Platform) {
+    
     }
  
     ionViewDidEnter() {
@@ -21,6 +22,13 @@ export class TodoListPage {
         if(!this.todoList) {
             this.todoList = [];
         }
+
+        Geofence.getWatched().then((resp)=> {
+            console.log(JSON.stringify(resp));
+        }).catch((error) => {
+            console.log(JSON.stringify(error));
+        });
+
     }
  
     complete(index: number) {
@@ -30,8 +38,7 @@ export class TodoListPage {
 
     delete(index: number) {
         var todo:Todo = this.todoList[index];
-        console.log(JSON.stringify(todo));
-        todo.removeGeofence();
+        //todo.removeGeofence();
         this.todoList.splice(index, 1);
         localStorage.setItem("todos", JSON.stringify(this.todoList));
     }
@@ -41,7 +48,7 @@ export class TodoListPage {
     }
 
     edit(index: number) {
-        this.navCtrl.push(TodoDetailsPage, { todo : this.todoList[index] });
+        this.navCtrl.push(TodoDetailsPage, { todo : this.todoList[index], index: index });
     }
 
 }

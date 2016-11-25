@@ -2,6 +2,7 @@ import { Location } from './location';
 import { GeofenceObject } from './geofence-obj';
 import { Geofence } from 'ionic-native';
 import { UUID } from 'angular2-uuid';
+import { Platform } from 'ionic-angular';
 
 export class Todo {
 
@@ -14,6 +15,10 @@ export class Todo {
         public location:Location) {
              
         this.id = UUID.UUID();
+
+    }
+
+    getWatchedGeofence() {
         Geofence.getWatched().then((geofencesJson) => {
             var geofences:Array<GeofenceObject> = JSON.parse(geofencesJson);
             var geofence = geofences.find(geofence => geofence.todoId === this.id)[0];
@@ -24,13 +29,11 @@ export class Todo {
         }).catch((error) => {
             console.log('Error getting watched geofences', JSON.stringify(error));
         });
-
     }
 
     updateGeofence() {
 
         if(this.location != null) {
-            var newGeofence: GeofenceObject;
             if(this.geofence!= null) {
                 this.geofence = this.geofence.updateGeofenceValues(this,this.location);
             } else {
@@ -51,13 +54,7 @@ export class Todo {
     }
 
     removeGeofence() {
-        if(this.geofence != null) {
-            Geofence.remove(this.geofence.id).then((resp) => {
-                console.log('Successfully removes geofence');
-            }).catch((error) => {
-                console.log('Error removing geofence', error);
-            });
-        }
+        
     }
 
 }

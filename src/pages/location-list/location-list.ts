@@ -29,7 +29,7 @@ export class LocationListPage {
     }
 
     edit(index: number) {
-        this.navCtrl.push(LocationDetailsPage, { location : this.locationList[index] });
+        this.navCtrl.push(LocationDetailsPage, { location : this.locationList[index], index: index });
     }
 
 }

@@ -8,6 +8,7 @@ export class Location {
         public name:string, 
         public latitude:number, 
         public longitude:number, 
+        public transitionType:number,
         public radius:number) {
             this.id = UUID.UUID();
     }

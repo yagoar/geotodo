@@ -9,43 +9,54 @@ import { Location } from '../../models/location';
 })
 export class LocationDetailsPage {
 
-  public locationList: Array<Location>;
-  public location:Location;
+  locationList: Array<Location>;
+  location:Location;
 
   constructor(public navCtrl: NavController, 
-    private navParams : NavParams,
-    private loadingController: LoadingController) {
+    public navParams : NavParams,
+    public loadingController: LoadingController) {
 
-    this.locationList = JSON.parse(localStorage.getItem("locations"));
-    if(!this.locationList) {
-      this.locationList = [];
-    }
+      this.locationList = JSON.parse(localStorage.getItem("locations"));
+        if(!this.locationList) {
+        this.locationList = [];
+      }
 
-    var passedLocation = navParams.get('location');
-    console.log(JSON.stringify(passedLocation));
-    if(passedLocation != null) {
+      this.location = new Location("test",0,0,3,200);
+      /*
+      var passedLocation = this.navParams.get('location');
+    
+      if(passedLocation != null) {
         this.location = passedLocation;
-    } else {
+      } else {
+        */
         let loader = this.loadingController.create({
           content: 'Aktuelle Position wird ermittelt...',
         });
 
-        loader.present().then(() => {
+        loader.present().then(() => {     
           Geolocation.getCurrentPosition().then((resp) => {
-            this.location = new Location("test",resp.coords.latitude,resp.coords.longitude,200);
+            console.log('Successfully got current location');
+            this.location = new Location("",resp.coords.latitude,resp.coords.longitude,3,200);
             loader.dismiss();
           }).catch((error) => {
             console.log('Error getting location', error);
           });
+          
   
         });
-    }
+    
   }
 
   save() {
 
       if(this.location.name != "") {
-            this.locationList.push(this.location);
+            
+            if(this.navParams.get('location') != null) {
+                this.locationList[this.navParams.get('index')] = this.location;
+            } else {
+                this.locationList.push(this.location);
+            }
+            
             localStorage.setItem("locations", JSON.stringify(this.locationList));
             this.navCtrl.pop();
       }

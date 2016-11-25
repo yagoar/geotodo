@@ -9,6 +9,7 @@ export class GeofenceObject {
     todoId:string;
     latitude:number;
     longitude:number; 
+    transitionType:number;
     radius:number;
     notification:Notification;
 
@@ -16,6 +17,7 @@ export class GeofenceObject {
        this.id = UUID.UUID();
        this.latitude = location.latitude;
        this.longitude = location.longitude;
+       this.transitionType = location.transitionType;
        this.radius = location.radius;
        this.notification = this.createNotification(todo.title, todo.description, location.name);
     }
