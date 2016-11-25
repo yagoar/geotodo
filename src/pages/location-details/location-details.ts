@@ -22,28 +22,29 @@ export class LocationDetailsPage {
       }
 
       this.location = new Location("test",0,0,3,200);
-      /*
-      var passedLocation = this.navParams.get('location');
+
+      let passedLocation = this.navParams.get('location');
     
       if(passedLocation != null) {
         this.location = passedLocation;
       } else {
-        */
-        let loader = this.loadingController.create({
-          content: 'Aktuelle Position wird ermittelt...',
-        });
 
-        loader.present().then(() => {     
-          Geolocation.getCurrentPosition().then((resp) => {
-            console.log('Successfully got current location');
-            this.location = new Location("",resp.coords.latitude,resp.coords.longitude,3,200);
-            loader.dismiss();
-          }).catch((error) => {
-            console.log('Error getting location', error);
+          let loader = this.loadingController.create({
+              content: 'Aktuelle Position wird ermittelt...',
           });
-          
-  
-        });
+
+          loader.present().then(() => {
+              Geolocation.getCurrentPosition().then((resp) => {
+                  console.log('Successfully got current location');
+                  this.location = new Location("", resp.coords.latitude, resp.coords.longitude, 3, 200);
+                  loader.dismiss();
+              }).catch((error) => {
+                  console.log('Error getting location', error);
+              });
+
+
+          });
+      }
     
   }
 

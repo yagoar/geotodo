@@ -25,7 +25,7 @@ export class TodoDetailsPage {
             this.locationsList = [];
         }
 
-        var passedTodo = this.navParams.get('todo');
+        let passedTodo = this.navParams.get('todo');
         if(passedTodo != null) {
             this.todoItem = passedTodo;
         } else {
@@ -36,9 +36,8 @@ export class TodoDetailsPage {
     updateLocation() {
         console.log(this.todoItem.location.name);
         
-        
-     //   this.todoItem.getWatchedGeofence();
-       // this.todoItem.updateGeofence();
+        //   this.todoItem.getWatchedGeofence();
+        // this.todoItem.updateGeofence();
     }
  
     save() {
