@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { IonicApp, IonicModule } from 'ionic-angular';
+import { NgModule, ErrorHandler } from '@angular/core';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TodoListPage } from '../pages/todo-list/todo-list';
@@ -21,7 +21,14 @@ import { LocationDetailsPage } from "../pages/location-details/location-details"
     LocationDetailsPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp, {
+      tabsPlacement: 'bottom',
+      platforms: {
+        ios: {
+          backButtonText: 'Zurück'
+        }
+      }
+    }, {})
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -34,7 +41,6 @@ import { LocationDetailsPage } from "../pages/location-details/location-details"
     TodoDetailsPage,
     LocationDetailsPage
   ],
-  providers: [
-  ]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
 export class AppModule {}

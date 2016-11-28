@@ -16,26 +16,39 @@ export class TodoDetailsPage {
     locationsList: Array<Location>;
  
     constructor(private navCtrl: NavController, private navParams: NavParams, private platform: Platform) {
-         this.todoList = JSON.parse(localStorage.getItem("todos"));
+
+        //Get list of todos from local storage
+        this.todoList = JSON.parse(localStorage.getItem("todos"));
         if(!this.todoList) {
             this.todoList = [];
         }
+
+        //Get list of location from local storage
         this.locationsList = JSON.parse(localStorage.getItem("locations"));
         if(!this.locationsList) {
             this.locationsList = [];
         }
 
+        //Get passed todoItem parameter (edit button)
         let passedTodo = this.navParams.get('todo');
         if(passedTodo != null) {
             this.todoItem = passedTodo;
+
         } else {
+
+            //Set watched geofence for current todoItem
             Geofence.getWatched().then((resp) => {
                 let geofences = JSON.parse(resp);
-                this.todoItem.geofence = geofences.find(geofence => geofence.todoId === this.todoItem.id)[0];
+                console.log(resp);
+                if(geofences != null) {
+                    this.todoItem.geofence = geofences.find(geofence => geofence.todoId === this.todoItem.id)[0];
+                }
 
             }).catch((error) => {
-
+                console.log("Error getting watched geofence", JSON.stringify(error));
             });
+
+            //Create new todoItem
             this.todoItem = new Todo("","",null);
         }
     }
@@ -47,26 +60,25 @@ export class TodoDetailsPage {
                 this.todoItem.geofence = new GeofenceObject(this.todoItem, this.todoItem.location);
             }
 
-            Geofence.addOrUpdate(this.todoItem.geofence).then((resp) => {
+            Geofence.addOrUpdate(this.todoItem.geofence).then(() => {
                 console.log('Successfully added/updated geofence');
-                Geofence.removeAll();
             }).catch((error) => {
                 console.log('Error adding geofence', error);
             });
 
         } else {
-
-            Geofence.remove(this.todoItem.geofence.id).then((resp) => {
-                console.log('Successfully removed geofence');
-            }).catch((error) => {
-                console.log('Error removing geofence', error);
-            });
+            if(this.todoItem.geofence != null) {
+                Geofence.remove(this.todoItem.geofence.id).then(() => {
+                    console.log('Successfully removed geofence');
+                }).catch((error) => {
+                    console.log('Error removing geofence', error);
+                });
+            }
         }
     }
 
     save() {
         if(this.todoItem.title != "") {
-
             this.updateGeofence();
 
             //Update todoItem in todoList or push into todoList
@@ -80,5 +92,4 @@ export class TodoDetailsPage {
             this.navCtrl.pop();
         }
     }
-
 }

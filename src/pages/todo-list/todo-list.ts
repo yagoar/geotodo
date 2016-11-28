@@ -23,10 +23,16 @@ export class TodoListPage {
             this.todoList = [];
         }
 
+        Geofence.getWatched().then((resp) => {
+            console.log(resp);
+        }).catch((error) => {
+            console.log('Error getting geofences', error);
+        });
+
     }
  
     completeTodo(index: number) {
-        Geofence.remove(this.todoList[index].id).then((resp) => {
+        Geofence.remove(this.todoList[index].geofence.id).then((resp) => {
             console.log('Successfully removed geofence');
         }).catch((error) => {
             console.log('Error removing geofence', error);
@@ -37,7 +43,7 @@ export class TodoListPage {
 
     deleteTodo(index: number) {
 
-        Geofence.remove(this.todoList[index].id).then((resp) => {
+        Geofence.remove(this.todoList[index].geofence.id).then((resp) => {
             console.log('Successfully removed geofence');
         }).catch((error) => {
             console.log('Error removing geofence', error);

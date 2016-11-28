@@ -1,4 +1,3 @@
-import { document } from '@angular/platform-browser/src/facade/browser';
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { Geolocation, GoogleMap, GoogleMapsLatLng, GoogleMapsEvent } from 'ionic-native';
@@ -98,6 +97,8 @@ export class LocationDetailsPage {
             this.navCtrl.pop();
       }
 
-    }
+  }
+
+
 
 }
