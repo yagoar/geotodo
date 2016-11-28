@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-import { TodosPage } from '../todos/todos';
-import { LocationsPage } from '../locations/locations';
+import { TodoListPage } from '../todo-list/todo-list';
+import { LocationListPage } from '../location-list/location-list';
 import { MapPage } from '../map/map';
 import { SettingsPage } from '../settings/settings';
 
@@ -11,8 +11,8 @@ import { SettingsPage } from '../settings/settings';
 export class TabsPage {
   // this tells the tabs component which Pages
   // should be each tab's root Page
-  tab1Root: any = TodosPage;
-  tab2Root: any = LocationsPage;
+  tab1Root: any = TodoListPage;
+  tab2Root: any = LocationListPage;
   tab3Root: any = MapPage;
   tab4Root: any = SettingsPage;
   

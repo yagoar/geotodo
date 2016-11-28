@@ -1,0 +1,40 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Location hinzufügen</ion-title>
+    <ion-buttons end>
+            <button ion-button text-only (click)="save()">
+               Speichern
+           </button>
+        </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="location">
+    <ion-list> 
+        <ion-item>
+            <ion-label floating>Name</ion-label>
+            <ion-input type="text" [(ngModel)]="location.name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Benachrichtigung beim</ion-label>
+            <ion-select [(ngModel)]="location.transitionType">
+                <ion-option value="1">Betreten der Region</ion-option>
+                <ion-option value="2">Verlassen der Region</ion-option>
+                <ion-option value="3">Beidem</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Radius</ion-label>
+            <ion-range [(ngModel)]="location.radius" color="primary" min="50" max="1000" step="10">
+                <ion-label range-left ></ion-label>
+                <ion-label range-right >{{location.radius}}m</ion-label>
+            </ion-range>
+        </ion-item>
+    </ion-list>
+    <div #map id="map"></div>
+
+</ion-content>
+
