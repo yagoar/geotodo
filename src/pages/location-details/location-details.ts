@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
-import { Geolocation, GoogleMap, GoogleMapsLatLng, GoogleMapsEvent } from 'ionic-native';
+import { Geolocation } from 'ionic-native';
 import { Location } from '../../models/location';
+
+import L from "leaflet";
 
 @Component({
   selector: 'page-location-details',
@@ -9,7 +11,9 @@ import { Location } from '../../models/location';
 })
 export class LocationDetailsPage {
 
-    map: GoogleMap;
+    map: any;
+    center: {lat: number, lng: number};
+    marker: L.Marker;
 
   locationList: Array<Location>;
   location:Location;
@@ -39,6 +43,7 @@ export class LocationDetailsPage {
           loader.present().then(() => {
               Geolocation.getCurrentPosition().then((resp) => {
                   console.log('Successfully got current location');
+                  this.center = {lat: resp.coords.latitude, lng: resp.coords.longitude};
                   this.location = new Location("", resp.coords.latitude, resp.coords.longitude, 3, 200);
                   loader.dismiss();
               }).catch((error) => {
@@ -48,39 +53,27 @@ export class LocationDetailsPage {
 
           });
       }
-    platform.ready().then(() => {
-            this.loadMap();
-        });
+  
+  }
+
+  ionViewDidLoad(){
+    this.loadMap();
   }
 
   loadMap(){
-          let location = new GoogleMapsLatLng(-34.9290,138.6010);
+        this.map = L.map('map', {
+       center: this.center,
+       zoom: 13
+     });
  
-        this.map = new GoogleMap('map', {
-          'backgroundColor': 'white',
-          'controls': {
-            'compass': true,
-            'myLocationButton': true,
-            'indoorPicker': true,
-            'zoom': true
-          },
-          'gestures': {
-            'scroll': true,
-            'tilt': true,
-            'rotate': true,
-            'zoom': true
-          },
-          'camera': {
-            'latLng': location,
-            'tilt': 30,
-            'zoom': 15,
-            'bearing': 50
-          }
-        });
- 
-        this.map.on(GoogleMapsEvent.MAP_READY).subscribe(() => {
-            console.log('Map is ready!');
-        });
+     L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+      .addTo(this.map);
+
+     if (this.marker) {
+       this.marker = this.marker.setLatLng(this.center);
+     } else {
+       this.marker = L.marker(this.center).addTo(this.map);
+     }
     }
 
   save() {

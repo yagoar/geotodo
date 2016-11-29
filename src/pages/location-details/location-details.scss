@@ -1,9 +1,18 @@
 page-location-details {
-    #map {
-        height: 100%;
-    }
+    
 
 }
 ion-app._gmaps_cdv_ .nav-decor{
   background-color: transparent !important;
+}
+
+.map-container{
+
+    position: absolute;
+
+    top: 50%;
+    left: 0px;
+
+    height: 100%;
+    width: 100%;
 }
