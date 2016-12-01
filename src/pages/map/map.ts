@@ -33,7 +33,7 @@ export class MapPage {
 
         console.log('MapPage constructor');  
 
-        //Get list of todos from local storage
+        // Get list of todos from local storage
         this.todoList = JSON.parse(localStorage.getItem("todos"));
         if(!this.todoList) {
             this.todoList = [];
@@ -49,8 +49,8 @@ export class MapPage {
 
         this.locList = [];
 
-        // create list which contains todo-location and information
-        // every location can have multiple todos
+        // create list which contains todo-location with information about todo
+        // an element (location) can have multiple todos
         // if a todo has no location, it won't be listed
         this.todoList.forEach((todo,index) => {
 
@@ -66,7 +66,7 @@ export class MapPage {
                             new_loc = false;
                             // combine todos in same marker
                             array[index]['count'] = array[index].count + 1;
-                            array[index]['name'] = todo.location.name+' - '+array[index].count+' Todos'
+                            array[index]['name'] = todo.location.name+'<br> -> '+array[index].count+' Todos'
                             array[index]['text'] =  array[index].text 
                                 + '------<br>' + todo.title+'<br>'+todo.description+'<br>';
                           }
@@ -114,8 +114,6 @@ export class MapPage {
     // this.showAlert();
     
      this.center = {lat: 48.137154, lng: 11.576124}; // Munich
-    //  this.center2 = {lat: 49.137154, lng: 11.586124};
-
  
      this.initMap();
      // when no map, maybe to use this workaround:
@@ -124,8 +122,7 @@ export class MapPage {
   }
 
   initMap() {
-    // eigenen Standort ermitteln
-    // oder erste Todo-Location als Startpunkt für die Map wählen
+    // determine position of user or use location of first todo-item
     if(this.locList.length > 0){
       this.center = {lat: this.locList[0].lat, lng: this.locList[0].lng};
     }
@@ -166,8 +163,6 @@ export class MapPage {
     }
 
     }
-  
-
 
   showAlert() {
     let alert = this.alertCtrl.create({
