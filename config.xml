@@ -80,4 +80,6 @@
   <allow-navigation href="http://141.31.72.171:8100"/>
   <allow-navigation href="http://192.168.100.21:8100"/>
   <allow-navigation href="http://141.31.78.41:8100"/>
+  <allow-navigation href="http://141.31.64.153:8100"/>
+  <icon src="resources/ios/icon/icon-small@3x.png"/>
 </widget>
