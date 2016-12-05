@@ -3,7 +3,7 @@
   <name>geotodo</name>
   <description>An awesome Ionic/Cordova app.</description>
   <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-  <content src="http://141.31.74.5:8100" original-src="index.html"/>
+  <content src="index.html"/>
   <access origin="*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
@@ -81,5 +81,7 @@
   <allow-navigation href="http://192.168.100.21:8100"/>
   <allow-navigation href="http://141.31.78.41:8100"/>
   <allow-navigation href="http://141.31.74.5:8100"/>
+  <allow-navigation href="http://192.168.2.106:8100"/>
+  <allow-navigation href="http://141.31.69.14:8100"/>
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
 </widget>
