@@ -229,15 +229,17 @@ export class MapPage {
            lng: this.locList[i].lng};
 
           this.marker = L.marker(this.center);
+          // add Tooltip with name of the location
+          /*
           this.marker.bindTooltip(this.locList[i].name, {
             permanent: false,
             direction: 'right',
             interactive: true,
   
           });
+          */
           
-          // add popup to location with name of the location
-          // this.marker.addTo(this.map).bindPopup(this.locList[i].text);
+          this.marker.addTo(this.map).bindPopup(this.locList[i].text);
 
           markers.push(this.marker);     
     }
