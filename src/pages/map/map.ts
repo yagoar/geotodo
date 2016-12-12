@@ -41,22 +41,10 @@ export class MapPage {
         this.locList = [];
 
 
-        // set default position
+        // default Position DHBW Stuttgart
         this.egoPosition = {lat: 48.773527, lng: 9.171102};
 
-
-        // Manuelles setzen und Speichern der Location zum Testen
-        /*
-        this.todoList[0].location = new Location("Oktoberfest Muenchen",48.137154, 11.576124,3,200);
-        this.todoList[1].location = new Location("Edeka Innenstadt",48.137154, 11.586124,3,200);
-        this.todoList[0].location = new Location("Edeka Innenstadt",48.137154, 11.586124,3,200);
-         this.todoList[4].location = new Location("DHBW Stuttgart",48.773527, 9.171102,3,200);
-
-        localStorage.setItem("todos", JSON.stringify(this.todoList));
-        */
-
-
-
+        // determine ego position
         let loader = this.loadingController.create({
               content: 'Aktuelle Position wird ermittelt...',
           });
@@ -64,16 +52,10 @@ export class MapPage {
           loader.present().then(() => {
               Geolocation.getCurrentPosition().then((resp) => {
                   console.log('Successfully got current location');
-                  //this.location = new Location("", resp.coords.latitude, resp.coords.longitude, 3, 200);
-              //    this.egoPosition.lat = resp.coords.latitude;
-              //    this.egoPosition.lng = resp.coords.longitude;
                   this.egoPosition = {lat: resp.coords.latitude, lng: resp.coords.longitude};
                   loader.dismiss();
               }).catch((error) => {
                   console.log('Error getting location', error);
-                  // default Position DHBW Stuttgart
-                //  this.egoPosition.lat = 48.773527;
-                //  this.egoPosition.lng =  9.171102; 
                   loader.dismiss();
               });
 
@@ -91,9 +73,7 @@ export class MapPage {
             this.todoList = [];
         }
 
-
         this.locList = [];
-
         // create list which contains todo-location with information about todo
         // an element (location) can have multiple todos
         // if a todo has no location, it won't be listed
@@ -124,16 +104,12 @@ export class MapPage {
                           lat: todo.location.latitude, lng: todo.location.longitude,
                           text: todo.title+'<br>'+todo.description+'<br>'});
                       }
-
                   }
                 }
-
 
         });
 
         this.distance_ = Number.MAX_VALUE;
-        // default Position DHBW Stuttgart
-        //  this.egoPosition = {lat: 48.773527, lng: 9.171102}; // take user Position, if available
 
         var locIndex = -1;
         // calculate distance to closest todo-location
@@ -147,7 +123,6 @@ export class MapPage {
           
         } );
 
-
   }
 
   ionViewDidEnter() {
@@ -156,13 +131,9 @@ export class MapPage {
 
     this.createLocMarkerList();
 
-    // alert: short introduction to the user about the function of this page
     if(this.distance_ != Number.MAX_VALUE){
     this.showAlert();
     }
-
-  // this.map.removeLayer();
-
 
     this.addMarkersToMap();
 
@@ -173,9 +144,7 @@ export class MapPage {
   ionViewDidLoad() {
     console.log('MapPage ViewDidLoad');
 
-    
-   // this.center = {lat: 48.773527, lng: 9.171102}; // DHBW Stuttgart
- 
+     
     this.initMap();
     // when no map, maybe to use this workaround:
     //setTimeout(this.loadMap.bind(this), 100);
@@ -193,14 +162,7 @@ export class MapPage {
        zoom: 12 
        // note: center and zoom are automatically set by using map.fitBounds()
     });
-    /*
-      this.map.fitBounds([
-        [48.773527, 9.171102],
-        [48.137154, 11.576124]
-        ]);
-    */
     
-
      L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
        .addTo(this.map);
  
