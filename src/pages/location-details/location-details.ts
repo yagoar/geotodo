@@ -141,6 +141,10 @@ export class LocationDetailsPage {
     }
   }
 
+  updateCircleByCurrentPosition(){
+    this.updateCircle(this.center);
+  }
+
   toggleFollow() {
     //follow disabled: start follow
     if (!this.following) {
