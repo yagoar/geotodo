@@ -55,14 +55,16 @@ export class LocationDetailsPage {
                   console.log('Successfully got current location');
                   this.center = {lat: resp.coords.latitude, lng: resp.coords.longitude};
                   this.location = new Location("", resp.coords.latitude, resp.coords.longitude, 3, 200);
-                  this.updateMap(this.center);
+                  this.updateMarker(this.center);
+                  this.updateCircle(this.center);
                   loader.dismiss(); 
               }).catch((error) => {
                   
                   console.log('Error getting location', JSON.stringify(error));
                   this.location = new Location("Stuttgart", 48.773976, 9.170984 ,3, 200 );
                   this.center= {lat: 48.773976, lng: 9.170984};              
-                  this.updateMap(this.center);
+                  this.updateMarker(this.center);
+                  this.updateCircle(this.center);
                   loader.dismiss();
               });
 
@@ -106,20 +108,16 @@ export class LocationDetailsPage {
      this.map.on('click', (e) =>{
        
        console.log("event fired", JSON.stringify(e.latlng));
-
        this.location.latitude = e.latlng.lat;
        this.location.longitude = e.latlng.lng;
        this.center = {lat: e.latlng.lat, lng: e.latlng.lng};
-       this.updateMap(this.center);
+       this.updateMarker(this.center);
+       this.updateCircle(this.center);
      });
 
      L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(this.map);
 
-     this.updateMap(this.center);
-  }
-
-  updateMap(latlng: {lat: number, lng: number}){
-    this.updateMarker(this.center);
+     this.updateMarker(this.center);
      this.updateCircle(this.center);
   }
 
