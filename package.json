@@ -43,7 +43,8 @@
     "ionic-plugin-keyboard",
     "cordova-plugin-geofence",
     "cordova-plugin-geolocation",
-    "cordova-plugin-add-swift-support"
+    "cordova-plugin-add-swift-support",
+    "de.appplant.cordova.plugin.local-notification"
   ],
   "cordovaPlatforms": [
     "ios",
@@ -51,7 +52,8 @@
       "platform": "ios",
       "version": "",
       "locator": "ios"
-    }
+    },
+    "android"
   ],
   "description": "geotodo: An Ionic project"
 }

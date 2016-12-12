@@ -43,6 +43,8 @@ export class LocationDetailsPage {
                   loader.dismiss();
               }).catch((error) => {
                   console.log('Error getting location', error);
+                  this.location = new Location("Stuttgart", 48.77710 , 9.180769 , 3, 200);
+                  loader.dismiss();
               });
 
 
