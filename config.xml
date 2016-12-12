@@ -76,10 +76,5 @@
   <plugin name="cordova-plugin-splashscreen" spec="~4.0.0"/>
   <plugin name="cordova-plugin-add-swift-support" spec="~1.6.0"/>
   <plugin name="cordova-plugin-geofence" spec="~0.6.0"/>
-  <allow-navigation href="http://192.168.178.50:8100"/>
-  <allow-navigation href="http://141.31.72.171:8100"/>
-  <allow-navigation href="http://192.168.100.21:8100"/>
-  <allow-navigation href="http://141.31.78.41:8100"/>
-  <allow-navigation href="http://141.31.64.153:8100"/>
-  <icon src="resources/ios/icon/icon-small@3x.png"/>
+  <plugin name="de.appplant.cordova.plugin.local-notification" spec="https://github.com/katzer/cordova-plugin-local-notifications"/>
 </widget>

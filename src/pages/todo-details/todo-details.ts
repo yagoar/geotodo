@@ -33,9 +33,6 @@ export class TodoDetailsPage {
         let passedTodo = this.navParams.get('todo');
         if(passedTodo != null) {
             this.todoItem = passedTodo;
-
-        } else {
-
             //Set watched geofence for current todoItem
             Geofence.getWatched().then((resp) => {
                 let geofences = JSON.parse(resp);
@@ -48,6 +45,7 @@ export class TodoDetailsPage {
                 console.log("Error getting watched geofence", JSON.stringify(error));
             });
 
+        } else {
             //Create new todoItem
             this.todoItem = new Todo("","",null);
         }
