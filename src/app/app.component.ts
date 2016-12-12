@@ -18,12 +18,6 @@ export class MyApp {
             StatusBar.styleDefault();
             Splashscreen.hide();
 
-            LocalNotifications.schedule({
-                at: new Date(new Date().getTime() + 20000),
-                title: 'Local Notification Example',
-                text: 'Multi Notification 1'
-            });
-
             Geofence.initialize().then((resp) => {
                 console.log("Successful geofence initialization");
 
@@ -40,21 +34,8 @@ export class MyApp {
                     }
 
                     //Schedule all notifications
-                    LocalNotifications.schedule([{
-                        id: 1,
-                        at: new Date(new Date().getTime() + 10000),
-                        title: 'Local Notification Example',
-                        text: 'Multi Notification 1'
-                    },{
-                        id: 2,
-                        at: new Date(new Date().getTime() + 10000),
-                        title: 'Local Notification Example',
-                        text: 'Multi Notification 2'
-                    }]);
+                    LocalNotifications.schedule(notifications);
 
-                    LocalNotifications.on('schedule', function(notification) {
-                        console.log("scheduled " + JSON.stringify(notification));
-                    });
                 });
             }).catch((error) => {
                 console.log("Error", JSON.stringify(error));
