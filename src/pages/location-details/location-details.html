@@ -28,7 +28,7 @@
         </ion-item>
         <ion-item>
             <ion-label>Radius</ion-label>
-            <ion-range [(ngModel)]="location.radius" color="primary" min="50" max="1000" step="10">
+            <ion-range [(ngModel)]="location.radius" color="primary" min="50" max="1000" step="10" (ngModelChange)="updateCircleByCurrentPosition()">
                 <ion-label range-left ></ion-label>
                 <ion-label range-right >{{location.radius}}m</ion-label>
             </ion-range>
