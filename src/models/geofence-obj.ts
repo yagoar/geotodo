@@ -20,14 +20,14 @@ export class GeofenceObject {
        this.longitude = location.longitude;
        this.transitionType = location.transitionType;
        this.radius = location.radius;
-       this.notification = new Notification( `${todo.title} in ${location.name}`, todo.description );
+       this.notification = new Notification( `${todo.title} in Location ${location.name}`);
     }
 
     updateGeofenceValues(todo:Todo, location:Location) {
         this.latitude = location.latitude;
         this.longitude = location.longitude;
         this.radius = location.radius;
-        this.notification = new Notification( `${todo.title} in ${location.name}`, todo.description );
+        this.notification = new Notification( `${todo.title} in Location ${location.name}`);
         return this;
     }
 }
