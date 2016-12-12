@@ -38,12 +38,6 @@ export class MapPage {
 
         console.log('MapPage constructor');  
 
-        // Get list of todos from local storage
-        this.todoList = JSON.parse(localStorage.getItem("todos"));
-        if(!this.todoList) {
-            this.todoList = [];
-        }
-
         this.locList = [];
 
 
@@ -90,6 +84,15 @@ export class MapPage {
   }
 
   createLocMarkerList(){
+
+        // Get list of todos from local storage
+        this.todoList = JSON.parse(localStorage.getItem("todos"));
+        if(!this.todoList) {
+            this.todoList = [];
+        }
+
+
+        this.locList = [];
 
         // create list which contains todo-location with information about todo
         // an element (location) can have multiple todos
@@ -157,6 +160,9 @@ export class MapPage {
     if(this.distance_ != Number.MAX_VALUE){
     this.showAlert();
     }
+
+  // this.map.removeLayer();
+
 
     this.addMarkersToMap();
 
@@ -240,7 +246,6 @@ export class MapPage {
     
     this.map.addLayer(featureGroup);
     this.map.fitBounds(featureGroup.getBounds());
-
 
     }
 
