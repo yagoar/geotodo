@@ -236,7 +236,8 @@ export class MapPage {
   
           });
           
-          this.marker.addTo(this.map).bindPopup(this.locList[i].text);
+          // add popup to location with name of the location
+          // this.marker.addTo(this.map).bindPopup(this.locList[i].text);
 
           markers.push(this.marker);     
     }
