@@ -15,8 +15,8 @@ export class Location {
             this.id = UUID.UUID();
     }
 
-    createNotification(title:string, description:string) {
-        this.notification.title = `${this.notification.title} ${title}`;
+    createNotification(text:string) {
+        this.notification.text = `${this.notification.text} ${text}`;
 
     }
 

@@ -1,4 +1,3 @@
-import { mapTo } from 'rxjs/operator/mapTo';
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, Platform, ToastController } from 'ionic-angular';
 import { Geolocation, PositionError, Geoposition } from 'ionic-native';
