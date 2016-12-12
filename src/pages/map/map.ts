@@ -89,7 +89,7 @@ export class MapPage {
 
         });
 
-        this.distance_ = -1;
+        this.distance_ = Number.MAX_VALUE;
         // default Position DHBW Stuttgart
         var ownPosition = {lat: 48.773527, lng: 9.171102}; // take user Position, if available
         var locIndex = -1;
@@ -97,7 +97,7 @@ export class MapPage {
         this.locList.forEach((loc,index) =>{
 
                 var distance = this.getDistanceFromLatLonInKm(loc.lat,loc.lng,ownPosition.lat,ownPosition.lng);
-                if (distance > this.distance_){
+                if (distance < this.distance_){
                     this.distance_ = distance;
                     locIndex = index;
                 }
@@ -130,7 +130,7 @@ export class MapPage {
     console.log('MapPage ViewDidLoad');
 
     // alert: short introduction to the user about the function of this page
-    if(this.distance_>0){
+    if(this.distance_ != Number.MAX_VALUE){
     this.showAlert();
   }
 
