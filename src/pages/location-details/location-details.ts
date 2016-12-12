@@ -31,40 +31,44 @@ export class LocationDetailsPage {
     public platform:Platform,
     public toastCtrl: ToastController) {
 
+    //set default location to prevent error if no Location is found by 'GeoLocation'
     this.center= {lat: 47.773976, lng: 9.170984};
+    this.location = new Location("test", this.center.lat, this.center.lng, 3, 200);
 
-      this.locationList = JSON.parse(localStorage.getItem("locations"));
+    //get current locations out of localStorage save to 'locationList'
+    this.locationList = JSON.parse(localStorage.getItem("locations"));
+        //if no List is found 'this.locationList' is empty
         if(!this.locationList) {
-        this.locationList = [];
-      }
+          this.locationList = [];
+        }
 
-      this.location = new Location("test",0,0,3,200);
-
-      let passedLocation = this.navParams.get('location');
+    //get a single location out of navParams - this is used if you want to edit a location in localStorage
+    //could be 'null' 
+    let passedLocation = this.navParams.get('location');
     
       if(passedLocation != null) {
         this.location = passedLocation;
       } else {
 
+          
           let loader = this.loadingController.create({
               content: 'Aktuelle Position wird ermittelt...',
           });
-
+          //shows loading-window with the above set content
           loader.present().then(() => {
+              //Find Current Location then update Location and the map. After that closes the loading-window
               Geolocation.getCurrentPosition().then((resp) => {
                   console.log('Successfully got current location');
                   this.center = {lat: resp.coords.latitude, lng: resp.coords.longitude};
                   this.location = new Location("", resp.coords.latitude, resp.coords.longitude, 3, 200);
-                  this.updateMarker(this.center);
-                  this.updateCircle(this.center);
+                  this.updateMap(this.center);
                   loader.dismiss(); 
               }).catch((error) => {
-                  
+              //If no Location is found reset location to the default Location    
                   console.log('Error getting location', JSON.stringify(error));
                   this.location = new Location("Stuttgart", 48.773976, 9.170984 ,3, 200 );
                   this.center= {lat: 48.773976, lng: 9.170984};              
-                  this.updateMarker(this.center);
-                  this.updateCircle(this.center);
+                  this.updateMap(this.center);
                   loader.dismiss();
               });
 
@@ -73,6 +77,7 @@ export class LocationDetailsPage {
   
   }
 
+  //if window is loaded  initMap
   ionViewDidLoad(){
     
       console.log("Load map!");
@@ -80,7 +85,7 @@ export class LocationDetailsPage {
     setTimeout(this.initMap.bind(this), 100);
   }
 
-
+  //saves location to localStorage
   save() {
 
       if(this.location.name != "") {
@@ -96,31 +101,36 @@ export class LocationDetailsPage {
       }
 
   }
-
+  // inits Map
   initMap(){
-      console.log("Load map!");
 
+      console.log("Load map!");
+      //create Map
         this.map = L.map('map', {
        center: this.center,
        zoom: 13
      });
-
+     //create click-event for the map
+     //Event updates the locatoin, the marker and the circle around the center
      this.map.on('click', (e) =>{
        
        console.log("event fired", JSON.stringify(e.latlng));
        this.location.latitude = e.latlng.lat;
        this.location.longitude = e.latlng.lng;
        this.center = {lat: e.latlng.lat, lng: e.latlng.lng};
-       this.updateMarker(this.center);
-       this.updateCircle(this.center);
-     });
+       this.updateMap(this.center);
+    });
 
      L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(this.map);
 
-     this.updateMarker(this.center);
-     this.updateCircle(this.center);
+     this.updateMap(this.center);
   }
-
+  //Updates the map (marker and circle)
+    updateMap (latlng: {lat: number, lng: number}){
+      this.updateMarker(this.center);
+      this.updateCircle(this.center);
+    }
+    //updates the marker on the map
    updateMarker(latlng: {lat: number, lng: number}) {
     if (this.marker) {
       this.marker = this.marker.setLatLng(latlng);
@@ -130,7 +140,7 @@ export class LocationDetailsPage {
 
     this.map.setView(this.center);
   }
-
+  //Updates the circle on the map
   updateCircle(latlng: {lat: number, lng: number}){
 
      if (this.circle) {
@@ -140,11 +150,12 @@ export class LocationDetailsPage {
       this.circle = L.circle(latlng, this.location.radius).addTo(this.map);
     }
   }
-
+  //updates the circle by the currentPosition 
   updateCircleByCurrentPosition(){
     this.updateCircle(this.center);
   }
 
+  //method from leaflet-example
   toggleFollow() {
     //follow disabled: start follow
     if (!this.following) {
@@ -170,12 +181,14 @@ export class LocationDetailsPage {
     }
   }
 
+  //method from leaflet-example
   onGeolocationUpdate(position: Geoposition) {
     let latlng = {lat: position.coords.latitude, lng: position.coords.longitude};
     this.center = latlng;
     this.updateMarker(latlng);
   }
 
+  //method from leaflet-example
   errorToast(error: PositionError) {
     console.log('Error ' + error.message);
     let toast = this.toastCtrl.create({
