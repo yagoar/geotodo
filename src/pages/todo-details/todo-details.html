@@ -20,10 +20,21 @@
             <ion-textarea rows="5" [(ngModel)]="todoItem.description"></ion-textarea>
         </ion-item>
         <ion-item>
-            <ion-label>Locations</ion-label>
+            <ion-label>Location</ion-label>
+            <div item-content>
+                {{locationName}}
+            </div>
+        </ion-item>
+        <ion-item>
+            <ion-label>Neue Location auswählen</ion-label>
             <ion-select [(ngModel)]="todoItem.location">
                 <ion-option *ngFor="let location of locationsList" [value]="location">{{location.name}}</ion-option>
             </ion-select>
-  </ion-item>
+        </ion-item>
+        <button ion-item detail-none (click)="deleteLocation()">
+            <div item-content danger>
+                Location löschen
+            </div>
+        </button>
     </ion-list>
 </ion-content>

@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, Platform, ToastController } from 'ionic-angular';
-import { Geolocation, PositionError, Geoposition } from 'ionic-native';
-import { Location } from '../../models/location';
+import {Geolocation, PositionError, Geoposition, Geofence} from 'ionic-native';
+import { LocationObj } from '../../models/location';
 
 import L from "leaflet";
+import {Todo} from "../../models/todo";
+import {GeofenceObject} from "../../models/geofence-obj";
 
 
 const OPT_GEOLOCATION = { maximumAge: 12000, timeout: 5000, enableHighAccuracy: false};
@@ -21,8 +23,8 @@ export class LocationDetailsPage {
     following = false;
     subscription: any;
 
-  locationList: Array<Location>;
-  location:Location;
+  locationList: Array<LocationObj>;
+  location: LocationObj;
 
   constructor(public navCtrl: NavController, 
     public navParams : NavParams,
@@ -36,8 +38,6 @@ export class LocationDetailsPage {
         if(!this.locationList) {
         this.locationList = [];
       }
-
-      this.location = new Location("test",0,0,3,200);
 
       let passedLocation = this.navParams.get('location');
     
@@ -53,14 +53,14 @@ export class LocationDetailsPage {
               Geolocation.getCurrentPosition().then((resp) => {
                   console.log('Successfully got current location');
                   this.center = {lat: resp.coords.latitude, lng: resp.coords.longitude};
-                  this.location = new Location("", resp.coords.latitude, resp.coords.longitude, 3, 200);
+                  this.location = new LocationObj("", resp.coords.latitude, resp.coords.longitude, 3, 200);
                   this.updateMarker(this.center);
                   this.updateCircle(this.center);
                   loader.dismiss(); 
               }).catch((error) => {
                   
                   console.log('Error getting location', JSON.stringify(error));
-                  this.location = new Location("Stuttgart", 48.773976, 9.170984 ,3, 200 );
+                  this.location = new LocationObj("Stuttgart", 48.773976, 9.170984 ,3, 200 );
                   this.center= {lat: 48.773976, lng: 9.170984};              
                   this.updateMarker(this.center);
                   this.updateCircle(this.center);
@@ -73,27 +73,55 @@ export class LocationDetailsPage {
   }
 
   ionViewDidLoad(){
-    
-      console.log("Load map!");
 
-    setTimeout(this.initMap.bind(this), 100);
+      console.log("Load map!");
+      setTimeout(this.initMap.bind(this), 100);
+
   }
 
 
   save() {
 
-      if(this.location.name != "") {
-            
-            if(this.navParams.get('location') != null) {
-                this.locationList[this.navParams.get('index')] = this.location;
-            } else {
-                this.locationList.push(this.location);
-            }
-            
-            localStorage.setItem("locations", JSON.stringify(this.locationList));
-            this.navCtrl.pop();
-      }
+      let loader = this.loadingController.create({
+          content: 'Änderung werden gespeichert...',
+      });
 
+      loader.present().then(() => {
+          if(this.location.name != "") {
+
+              if(this.navParams.get('location') != null) {
+                  this.locationList[this.navParams.get('index')] = this.location;
+
+                  let todoList : Array<Todo> = JSON.parse(localStorage.getItem("todos"));
+                  for(let todo of todoList) {
+                      if(todo.location.id === this.location.id) {
+                          todo.location = this.location;
+                          Geofence.remove(todo.geofence.id).then((resp) => {
+                              console.log('Successfully removed geofence');
+
+                              todo.geofence = new GeofenceObject(todo, this.location);
+
+                              Geofence.addOrUpdate(todo.geofence).then(() => {
+                                  console.log('Successfully added/updated geofence');
+                              }).catch((error) => {
+                                  console.log('Error adding geofence', error);
+                              });
+                          }).catch((error) => {
+                              console.log('Error removing geofence', error);
+                          });
+                      }
+                  }
+
+              } else {
+                  this.locationList.push(this.location);
+              }
+
+              localStorage.setItem("locations", JSON.stringify(this.locationList));
+              loader.dismiss();
+              this.navCtrl.pop();
+          }
+
+      });
   }
 
   initMap(){
@@ -114,7 +142,7 @@ export class LocationDetailsPage {
        this.updateCircle(this.center);
      });
 
-     L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(this.map);
+     L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { detectRetina: true}).addTo(this.map);
 
      this.updateMarker(this.center);
      this.updateCircle(this.center);
@@ -162,7 +190,7 @@ export class LocationDetailsPage {
           var geoposition = (data as Geoposition);
           this.onGeolocationUpdate(geoposition);
         }
-      })
+      });
     //follow not disabled: stop follow
     } else {
       this.subscription.unsubscribe();

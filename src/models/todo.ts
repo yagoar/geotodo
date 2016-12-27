@@ -1,4 +1,4 @@
-import { Location } from './location';
+import { LocationObj } from './location';
 import { GeofenceObject } from './geofence-obj';
 import { UUID } from 'angular2-uuid';
 
@@ -10,7 +10,7 @@ export class Todo {
     constructor( 
         public title:string,
         public description:string,
-        public location:Location) {
+        public location:LocationObj) {
              
         this.id = UUID.UUID();
     }

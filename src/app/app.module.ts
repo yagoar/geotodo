@@ -41,6 +41,7 @@ import { LocationDetailsPage } from "../pages/location-details/location-details"
     TodoDetailsPage,
     LocationDetailsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}
+  ]
 })
 export class AppModule {}

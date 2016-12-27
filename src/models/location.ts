@@ -1,7 +1,7 @@
 import { UUID } from 'angular2-uuid';
 import { Notification } from './notification';
 
-export class Location {
+export class LocationObj {
 
     id:string;
     notification:Notification;

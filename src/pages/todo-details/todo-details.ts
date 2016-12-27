@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Platform } from 'ionic-angular';
-import { Location } from '../../models/location';
+import { NavController, NavParams } from 'ionic-angular';
+import { LocationObj } from '../../models/location';
 import { Todo } from '../../models/todo';
 import { Geofence } from 'ionic-native';
 import {GeofenceObject} from "../../models/geofence-obj";
@@ -13,9 +13,10 @@ export class TodoDetailsPage {
 
     todoList: Array<Todo>;
     todoItem: Todo;
-    locationsList: Array<Location>;
+    locationName: string = '';
+    locationsList: Array<LocationObj>;
  
-    constructor(private navCtrl: NavController, private navParams: NavParams, private platform: Platform) {
+    constructor(private navCtrl: NavController, private navParams: NavParams) {
 
         //Get list of todos from local storage
         this.todoList = JSON.parse(localStorage.getItem("todos"));
@@ -33,6 +34,9 @@ export class TodoDetailsPage {
         let passedTodo = this.navParams.get('todo');
         if(passedTodo != null) {
             this.todoItem = passedTodo;
+            if(this.todoItem.location != null) {
+                this.locationName = this.todoItem.location.name;
+            }
 
         } else {
 
@@ -66,14 +70,17 @@ export class TodoDetailsPage {
                 console.log('Error adding geofence', error);
             });
 
-        } else {
-            if(this.todoItem.geofence != null) {
-                Geofence.remove(this.todoItem.geofence.id).then(() => {
-                    console.log('Successfully removed geofence');
-                }).catch((error) => {
-                    console.log('Error removing geofence', error);
-                });
-            }
+        }
+    }
+
+    deleteLocation() {
+        if(this.todoItem.geofence != null) {
+            Geofence.remove(this.todoItem.geofence.id).then(() => {
+                console.log('Successfully removed geofence');
+                this.todoItem.location = null;
+            }).catch((error) => {
+                console.log('Error removing geofence', error);
+            });
         }
     }
 

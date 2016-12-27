@@ -21,25 +21,27 @@ export class MyApp {
 
             Geofence.initialize().then((resp) => {
                 console.log("Successful geofence initialization");
-
-                Geofence.onTransitionReceived().subscribe((geofences) => {
-
-                    //Parse triggered geofences into Geofence objects
-                    let geofenceObjects: Array<GeofenceObject> = geofences;
-
-                    let notifications: Array<Notification> = [];
-
-                    for (let geofence of geofenceObjects) {
-                        console.log("Geofence crossed " + geofence.id);
-                        notifications.push(geofence.notification);
-                    }
-
-                    //Schedule all notifications
-                    LocalNotifications.schedule(notifications);
-
-                });
             }).catch((error) => {
                 console.log("Error", JSON.stringify(error));
+            });
+
+            Geofence.onTransitionReceived().subscribe((geofences) => {
+
+                console.log("Transition received");
+
+                //Parse triggered geofences into Geofence objects
+                let geofenceObjects: Array<GeofenceObject> = geofences;
+
+                let notifications: Array<Notification> = [];
+
+                for (let geofence of geofenceObjects) {
+                    console.log("Geofence crossed " + geofence.id);
+                    notifications.push(geofence.notification);
+                }
+
+                //Schedule all notifications
+                LocalNotifications.schedule(notifications);
+
             });
         });
     }

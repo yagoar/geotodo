@@ -3,7 +3,7 @@
   <ion-navbar>
     <ion-title>Locations</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="add()">
+      <button ion-button icon-only (click)="addLocation()">
           <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
@@ -13,16 +13,17 @@
 
 
 <ion-content class="locations">
+    <ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl" ></ion-searchbar>
     <ion-list>
         <ion-item-sliding *ngFor="let location of locationList; let i = index">
             <ion-item>
                 <h2>{{ location.name }}</h2>
             </ion-item>
             <ion-item-options side="right">
-                <button ion-button text-only  color="primary" (click)="edit(i)">
+                <button ion-button text-only  color="primary" (click)="editLocation(i)">
                     Editieren
                 </button>
-                <button ion-button text-only expandable color="danger" (click)="delete(i)">
+                <button ion-button text-only expandable color="danger" (click)="deleteLocation(i)">
                     Löschen
                 </button>
             </ion-item-options>
