@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController,LoadingController} from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { Todo } from '../../models/todo';
-import { Geolocation } from 'ionic-native';
-
 
 import L from "leaflet";
 
@@ -25,46 +23,14 @@ export class MapPage {
     center2: {lat: number, lng: number};
     distance_: number;
 
-    egoPosition : {lat: number, lng: number};
-
     marker: L.Marker;
 
     locList: Array<{count: number, name: string, lat: number, lng: number, text: string}>
 
 
-    constructor(public navCtrl: NavController,public alertCtrl: AlertController,public loadingController: LoadingController) {
-
+    constructor(public navCtrl: NavController,public alertCtrl: AlertController) {
 
         console.log('MapPage constructor');
-
-        this.locList = [];
-
-
-        // default Position DHBW Stuttgart
-        this.egoPosition = {lat: 48.773527, lng: 9.171102};
-
-        // determine ego position
-        let loader = this.loadingController.create({
-            content: 'Aktuelle Position wird ermittelt...',
-        });
-
-        loader.present().then(() => {
-            Geolocation.getCurrentPosition().then((resp) => {
-                console.log('Successfully got current location');
-                this.egoPosition = {lat: resp.coords.latitude, lng: resp.coords.longitude};
-                loader.dismiss();
-            }).catch((error) => {
-                console.log('Error getting location', error);
-                loader.dismiss();
-            });
-
-
-        });
-
-
-    }
-
-    createLocMarkerList(){
 
         // Get list of todos from local storage
         this.todoList = JSON.parse(localStorage.getItem("todos"));
@@ -72,7 +38,18 @@ export class MapPage {
             this.todoList = [];
         }
 
+        // Manuelles setzen und Speichern der Location zum Testen
+        /*
+         this.todoList[0].location = new Location("Oktoberfest Muenchen",48.137154, 11.576124,3,200);
+         this.todoList[1].location = new Location("Edeka Innenstadt",48.137154, 11.586124,3,200);
+         this.todoList[0].location = new Location("Edeka Innenstadt",48.137154, 11.586124,3,200);
+         this.todoList[4].location = new Location("DHBW Stuttgart",48.773527, 9.171102,3,200);
+
+         localStorage.setItem("todos", JSON.stringify(this.todoList));
+         */
+
         this.locList = [];
+
         // create list which contains todo-location with information about todo
         // an element (location) can have multiple todos
         // if a todo has no location, it won't be listed
@@ -103,24 +80,28 @@ export class MapPage {
                             lat: todo.location.latitude, lng: todo.location.longitude,
                             text: todo.title+'<br>'+todo.description+'<br>'});
                     }
+
                 }
             }
 
+
         });
 
-        this.distance_ = Number.MAX_VALUE;
-
+        this.distance_ = -1;
+        // default Position DHBW Stuttgart
+        var ownPosition = {lat: 48.773527, lng: 9.171102}; // take user Position, if available
         var locIndex = -1;
         // calculate distance to closest todo-location
         this.locList.forEach((loc,index) =>{
 
-            var distance = this.getDistanceFromLatLonInKm(loc.lat,loc.lng,this.egoPosition.lat,this.egoPosition.lng);
-            if (distance < this.distance_){
+            var distance = this.getDistanceFromLatLonInKm(loc.lat,loc.lng,ownPosition.lat,ownPosition.lng);
+            if (distance > this.distance_){
                 this.distance_ = distance;
                 locIndex = index;
             }
 
         } );
+
 
     }
 
@@ -128,14 +109,17 @@ export class MapPage {
 
         console.log('MapPage ViewDidEnter');
 
-        this.createLocMarkerList();
-
-        if(this.distance_ != Number.MAX_VALUE){
-            this.showAlert();
-        }
-
-        this.addMarkersToMap();
-
+        /*
+         // testing:
+         this.todoList.forEach(function(todo) {
+         if(todo.location == null ){
+         console.log('Todo: '+todo.title+' - No Location = FALSE');
+         }
+         else{
+         console.log('Todo: '+todo.title+' - Location = TRUE');
+         }
+         });
+         */
 
     }
 
@@ -143,6 +127,12 @@ export class MapPage {
     ionViewDidLoad() {
         console.log('MapPage ViewDidLoad');
 
+        // alert: short introduction to the user about the function of this page
+        if(this.distance_>0){
+            this.showAlert();
+        }
+
+        this.center = {lat: 48.773527, lng: 9.171102}; // DHBW Stuttgart
 
         this.initMap();
         // when no map, maybe to use this workaround:
@@ -157,12 +147,19 @@ export class MapPage {
             this.center = {lat: this.locList[0].lat, lng: this.locList[0].lng};
         }
         this.map = L.map('map', {
-            center: this.egoPosition,
+            center: this.center,
             zoom: 12
             // note: center and zoom are automatically set by using map.fitBounds()
         });
+        /*
+         this.map.fitBounds([
+         [48.773527, 9.171102],
+         [48.137154, 11.576124]
+         ]);
+         */
 
-        L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+
+        L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { detectRetina: true})
             .addTo(this.map);
 
         /*
@@ -173,10 +170,6 @@ export class MapPage {
          }
          */
 
-
-    }
-
-    addMarkersToMap(){
         // Two options here for setting zoom:
         /* 1. Set zoom to fit all markers
          2. Set zoom to fit marker of user position and closest todo-lcoation
@@ -190,19 +183,18 @@ export class MapPage {
                 lng: this.locList[i].lng};
 
             this.marker = L.marker(this.center);
-            // add Tooltip with name of the location
-            /*
-             this.marker.bindTooltip(this.locList[i].name, {
-             permanent: false,
-             direction: 'right',
-             interactive: true,
+            this.marker.bindTooltip(this.locList[i].name, {
+                permanent: false,
+                direction: 'right',
+                interactive: true,
 
-             });
-             */
+            });
 
             this.marker.addTo(this.map).bindPopup(this.locList[i].text);
 
             markers.push(this.marker);
+
+
         }
 
         // Option 1: Set zoom to fit all markers
@@ -222,6 +214,9 @@ export class MapPage {
         });
         alert.present();
     }
+
+
+
 
     getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
         var R = 6371; // Radius of the earth in km
