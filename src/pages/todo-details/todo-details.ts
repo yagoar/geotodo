@@ -78,6 +78,7 @@ export class TodoDetailsPage {
             Geofence.remove(this.todoItem.geofence.id).then(() => {
                 console.log('Successfully removed geofence');
                 this.todoItem.location = null;
+                this.locationName = '';
             }).catch((error) => {
                 console.log('Error removing geofence', error);
             });

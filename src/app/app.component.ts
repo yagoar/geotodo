@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import {StatusBar, Splashscreen, Geofence, LocalNotifications} from 'ionic-native';
-
-import { TabsPage } from '../pages/tabs/tabs';
-import {GeofenceObject} from "../models/geofence-obj";
-import {Notification} from "../models/notification";
+import { StatusBar, Splashscreen, Geofence, LocalNotifications} from 'ionic-native';
+import { GeofenceObject } from "../models/geofence-obj";
+import { Notification } from "../models/notification";
+import { LoginPage } from "../pages/login-page/login-page";
 
 
 @Component({
@@ -12,7 +11,7 @@ import {Notification} from "../models/notification";
 })
 export class MyApp {
 
-    rootPage = TabsPage;
+    rootPage = LoginPage;
 
     constructor(platform: Platform) {
         platform.ready().then(() => {

@@ -39,6 +39,9 @@ export class LocationDetailsPage {
         this.locationList = [];
       }
 
+      this.location = new LocationObj("",0,0,3,200);
+
+
       let passedLocation = this.navParams.get('location');
     
       if(passedLocation != null) {

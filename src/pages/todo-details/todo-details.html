@@ -31,10 +31,8 @@
                 <ion-option *ngFor="let location of locationsList" [value]="location">{{location.name}}</ion-option>
             </ion-select>
         </ion-item>
-        <button ion-item detail-none (click)="deleteLocation()">
-            <div item-content danger>
-                Location löschen
-            </div>
+        <button ion-item detail-none class="item-button-danger" (click)="deleteLocation()">
+            Location entfernen
         </button>
     </ion-list>
 </ion-content>

@@ -8,6 +8,9 @@ import { MapPage } from '../pages/map/map';
 import { SettingsPage } from '../pages/settings/settings';
 import { TodoDetailsPage } from "../pages/todo-details/todo-details";
 import { LocationDetailsPage } from "../pages/location-details/location-details";
+import {LoginPage} from "../pages/login-page/login-page";
+import {RegisterPage} from "../pages/register-page/register-page";
+import {AuthService} from "../providers/auth-service";
 
 @NgModule({
   declarations: [
@@ -18,7 +21,9 @@ import { LocationDetailsPage } from "../pages/location-details/location-details"
     SettingsPage,
     TabsPage,
     TodoDetailsPage,
-    LocationDetailsPage
+    LocationDetailsPage,
+    LoginPage,
+    RegisterPage
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -39,9 +44,11 @@ import { LocationDetailsPage } from "../pages/location-details/location-details"
     SettingsPage,
     TabsPage,
     TodoDetailsPage,
-    LocationDetailsPage
+    LocationDetailsPage,
+    LoginPage,
+    RegisterPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}
+  providers: [AuthService, {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
 export class AppModule {}

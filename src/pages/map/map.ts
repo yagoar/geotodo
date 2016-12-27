@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController,LoadingController} from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { Todo } from '../../models/todo';
-import { Location } from '../../models/location';
 import { Geolocation } from 'ionic-native';
 
 
