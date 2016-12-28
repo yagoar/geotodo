@@ -20,7 +20,6 @@ export class MapPage {
     todoList: Array<Todo>;
     map: any;
     center: {lat: number, lng: number};
-    center2: {lat: number, lng: number};
     distance_: number;
 
     marker: L.Marker;
@@ -30,23 +29,41 @@ export class MapPage {
 
     constructor(public navCtrl: NavController,public alertCtrl: AlertController) {
 
-        console.log('MapPage constructor');
+     //   console.log('MapPage constructor');
+
+        this.center = {lat: 48.773527, lng: 9.171102}; // DHBW Stuttgart
+
+        /*
+
+        this.distance_ = -1;
+        // default Position DHBW Stuttgart
+        var ownPosition = {lat: 48.773527, lng: 9.171102}; // take user Position, if available
+        var locIndex = -1;
+        // calculate distance to closest todo-location
+        this.locList.forEach((loc,index) =>{
+
+            var distance = this.getDistanceFromLatLonInKm(loc.lat,loc.lng,ownPosition.lat,ownPosition.lng);
+            if (distance > this.distance_){
+                this.distance_ = distance;
+                locIndex = index;
+            }
+
+        } );
+
+        */
+
+
+    }
+
+
+
+    updateLocList(){
 
         // Get list of todos from local storage
         this.todoList = JSON.parse(localStorage.getItem("todos"));
         if(!this.todoList) {
             this.todoList = [];
         }
-
-        // Manuelles setzen und Speichern der Location zum Testen
-        /*
-         this.todoList[0].location = new Location("Oktoberfest Muenchen",48.137154, 11.576124,3,200);
-         this.todoList[1].location = new Location("Edeka Innenstadt",48.137154, 11.586124,3,200);
-         this.todoList[0].location = new Location("Edeka Innenstadt",48.137154, 11.586124,3,200);
-         this.todoList[4].location = new Location("DHBW Stuttgart",48.773527, 9.171102,3,200);
-
-         localStorage.setItem("todos", JSON.stringify(this.todoList));
-         */
 
         this.locList = [];
 
@@ -87,93 +104,57 @@ export class MapPage {
 
         });
 
-        this.distance_ = -1;
-        // default Position DHBW Stuttgart
-        var ownPosition = {lat: 48.773527, lng: 9.171102}; // take user Position, if available
-        var locIndex = -1;
-        // calculate distance to closest todo-location
-        this.locList.forEach((loc,index) =>{
-
-            var distance = this.getDistanceFromLatLonInKm(loc.lat,loc.lng,ownPosition.lat,ownPosition.lng);
-            if (distance > this.distance_){
-                this.distance_ = distance;
-                locIndex = index;
-            }
-
-        } );
-
 
     }
 
+
     ionViewDidEnter() {
 
-        console.log('MapPage ViewDidEnter');
+      //  console.log('MapPage ViewDidEnter');
 
-        /*
-         // testing:
-         this.todoList.forEach(function(todo) {
-         if(todo.location == null ){
-         console.log('Todo: '+todo.title+' - No Location = FALSE');
-         }
-         else{
-         console.log('Todo: '+todo.title+' - Location = TRUE');
-         }
-         });
-         */
+        this.updateLocList();
+
+        this.addMarkers();
 
     }
 
 
     ionViewDidLoad() {
-        console.log('MapPage ViewDidLoad');
+      //  console.log('MapPage ViewDidLoad');
 
-        // alert: short introduction to the user about the function of this page
-        if(this.distance_>0){
-            this.showAlert();
-        }
-
-        this.center = {lat: 48.773527, lng: 9.171102}; // DHBW Stuttgart
+        this.updateLocList();
 
         this.initMap();
         // when no map, maybe to use this workaround:
-        //setTimeout(this.loadMap.bind(this), 100);
+        // setTimeout(this.loadMap.bind(this), 100);
+
+        this.addMarkers();
+
+        // alert: short introduction to the user about the function of this page
+        /*
+        if(this.distance_>0){
+            this.showAlert();
+        }
+        */
 
     }
 
 
     initMap() {
-        // determine position of user or use location of first todo-item
-        if(this.locList.length > 0){
-            this.center = {lat: this.locList[0].lat, lng: this.locList[0].lng};
-        }
-        this.map = L.map('map', {
-            center: this.center,
-            zoom: 12
-            // note: center and zoom are automatically set by using map.fitBounds()
-        });
-        /*
-         this.map.fitBounds([
-         [48.773527, 9.171102],
-         [48.137154, 11.576124]
-         ]);
-         */
 
+        this.map = L.map('map', {
+            center: this.center, // if no todo-locations are available, use default position to center map
+            zoom: 12
+        });
 
         L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { detectRetina: true})
             .addTo(this.map);
+    
+    }
 
-        /*
-         if (this.marker) {
-         this.marker = this.marker.setLatLng(this.center);
-         } else {
-         this.marker = L.marker(this.center).addTo(this.map);
-         }
-         */
 
-        // Two options here for setting zoom:
-        /* 1. Set zoom to fit all markers
-         2. Set zoom to fit marker of user position and closest todo-lcoation
-         */
+    addMarkers(){
+
         var markers =  []
 
         // set marker
@@ -183,27 +164,34 @@ export class MapPage {
                 lng: this.locList[i].lng};
 
             this.marker = L.marker(this.center);
+            /*
             this.marker.bindTooltip(this.locList[i].name, {
                 permanent: false,
                 direction: 'right',
                 interactive: true,
 
             });
+            */
 
             this.marker.addTo(this.map).bindPopup(this.locList[i].text);
 
             markers.push(this.marker);
 
-
         }
 
-        // Option 1: Set zoom to fit all markers
+        if(markers.length >0){
         var featureGroup = L.featureGroup(markers).addTo(this.map);
-
+        
         this.map.addLayer(featureGroup);
+        // Set zoom to fit all markers
         this.map.fitBounds(featureGroup.getBounds());
+        }
 
+        
+        
     }
+
+    
 
     showAlert() {
         let alert = this.alertCtrl.create({
